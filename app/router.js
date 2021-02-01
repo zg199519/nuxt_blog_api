@@ -7,14 +7,14 @@ module.exports = app => {
   const { router, controller } = app;
   router.post('/api/home/list', controller.home.list);// 获取内容列表
   router.get('/api/home/detail', controller.home.detail);// 获取内容
-  router.post('/api/home/addArticle', app.middleware.loginAuth(), controller.home.addArticle);// 新增文章
+  router.post('/api/home/addArticle', controller.home.addArticle);// 新增文章 app.middleware.loginAuth(), 
 
 
   router.get('/api/user/email_send_code', controller.user.emailSendCode);// 会员邮箱激活
   router.post('/api/user/registered', controller.user.registered);// 会员注册接口
   router.post('/api/user/login', controller.user.login);// 会员登录接口
 
-
+  router.post('/api/file/single_file_upload', controller.base.singleFileUpload);// 单个文件上传
 
 
   // router.post('/api/home/bookList', controller.home.bookList);// 获取小册列表
