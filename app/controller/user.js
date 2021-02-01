@@ -34,10 +34,8 @@ class UserController extends Controller {
     const newPwd = md5.update(params.password).digest('hex');
     const saveData = {
       idEncrypted: await ctx.helper.genID(32),
-      auth: 1,
       email: params.email,
       password: newPwd,
-      name: '猿问' + Math.ceil(Math.random() * 100000),
       creationTime: new Date(),
     };
 
@@ -53,16 +51,15 @@ class UserController extends Controller {
   }
 
 
-  // 会员邮箱激活
+  // 获取注册邮箱验证码
   async emailSendCode() {
-
     const { ctx } = this;
     const params = ctx.query;
     const data = await ctx.service.mailLog.emailSendCode(params);
 
     const msgData = {
       email: '',
-      subject: '猿问博客注册',
+      subject: '欢迎注册我的博客【周光】',
       text: '',
     };
 
@@ -125,12 +122,12 @@ class UserController extends Controller {
   }
 
   // 会员信息
-  async info() {
-    const { ctx } = this;
-    const userInfo = await ctx.service.user.userInfo('', '', ctx.query.USERID);
-    delete userInfo.password;
-    ctx.body = await ctx.helper.successResponse(userInfo);
-  }
+  // async info() {
+  //   const { ctx } = this;
+  //   const userInfo = await ctx.service.user.userInfo('', '', ctx.query.USERID);
+  //   delete userInfo.password;
+  //   ctx.body = await ctx.helper.successResponse(userInfo);
+  // }
 
   // // 作者榜单
   // async authorList() {
@@ -140,27 +137,27 @@ class UserController extends Controller {
   // }
 
   // 更新会员信息
-  async updateInfo() {
-    const { ctx } = this;
-    const params = ctx.request.body;
-    const data = {};
-    for (const key in params) {
-      if (params[key]) {
-        data[key] = params[key];
-      }
-    }
-    const wInfo = {
-      id: ctx.query.USERID,
-    };
-    const uCode = await ctx.service.user.updateInfo(wInfo, data);
-    if (uCode.affectedRows !== 1) {
-      // 重新查询信息 然后返回个人信息
-      ctx.body = await ctx.helper.failureResponse('更新失败！');
-      return false;
-    }
-    ctx.body = await ctx.helper.successResponse();
-    return false;
-  }
+  // async updateInfo() {
+  //   const { ctx } = this;
+  //   const params = ctx.request.body;
+  //   const data = {};
+  //   for (const key in params) {
+  //     if (params[key]) {
+  //       data[key] = params[key];
+  //     }
+  //   }
+  //   const wInfo = {
+  //     id: ctx.query.USERID,
+  //   };
+  //   const uCode = await ctx.service.user.updateInfo(wInfo, data);
+  //   if (uCode.affectedRows !== 1) {
+  //     // 重新查询信息 然后返回个人信息
+  //     ctx.body = await ctx.helper.failureResponse('更新失败！');
+  //     return false;
+  //   }
+  //   ctx.body = await ctx.helper.successResponse();
+  //   return false;
+  // }
 
   // // 联合统计查询
   // async statistical() {
@@ -173,7 +170,6 @@ class UserController extends Controller {
   //   // 我发布的帖子 ， 文章 ， 小册 我关注的人 关注我的人
   //   ctx.body = await ctx.helper.successResponse(uData);
   // }
-
 
 }
 

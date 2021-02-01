@@ -5,7 +5,7 @@ const Service = require('egg').Service;
     class ActicleService extends Service {
 
 
-        // 文章沸点查询列表
+        // 文章列表
         async getList(params) {
             const offset = (params.page - 1) * params.pageSize
             return await this.app.mysql.select('article', {
@@ -21,6 +21,12 @@ const Service = require('egg').Service;
             return await this.app.mysql.get('article', { id: params.id  });
         }
         
+        // 新增文章
+        async addArticle(params) {
+            params.creationTime = new Date();
+            const results = await this.app.mysql.insert('article', params);
+            return results;
+        }
 
         // // 获取我的文章列表
         // async myArticleList(params) {
@@ -148,13 +154,6 @@ const Service = require('egg').Service;
         //     }
 
         //     return lists;
-        // }
-
-        // // 新增文章
-        // async addArticle(params) {
-        //     params.creationTime = new Date();
-        //     const results = await this.app.mysql.insert('article', params);
-        //     return results;
         // }
 
         // // 修改文章

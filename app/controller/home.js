@@ -19,6 +19,18 @@ class HomeController extends Controller {
     ctx.body = await ctx.helper.successResponse(data);
   }
 
+  // 新增文章
+  async addArticle() {
+    const { ctx } = this;
+    const userInfo = await ctx.service.user.userInfo('', '', ctx.query.USERID);
+    if(Number(userInfo.authority) !== 1){
+      ctx.body = await ctx.helper.failureResponse('你不是站长，没有权限发布文章！');
+      return false;
+    }
+    const params = ctx.request.body;
+    await ctx.service.article.addArticle(params);
+    ctx.body = await ctx.helper.successResponse();
+  }
 
   // // 书列表
   // async bookList() {
@@ -70,16 +82,7 @@ class HomeController extends Controller {
   //   ctx.body = await ctx.helper.successResponse();
   // }
 
-  // // 新增文章
-  // async addArticle() {
-  //   const { ctx } = this;
-  //   const query = ctx.query;
-  //   const params = ctx.request.body;
-  //   params.userId = query.USERID;
-  //   // ctx.body = params;
-  //   await ctx.service.article.addArticle(params);
-  //   ctx.body = await ctx.helper.successResponse();
-  // }
+
 
   // // 修改小册
   // async modifyBook() {
